@@ -11,8 +11,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declaration": true,
+    "experimentalDecorators": true,
     "jsx": "react",
-    "outDir": "dist"
+    "outDir": "dist",
+    "strictPropertyInitialization": false
   },
   "include": ["src"]
 }
