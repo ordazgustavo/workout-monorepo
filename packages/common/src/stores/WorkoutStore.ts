@@ -1,5 +1,6 @@
-import React from 'react'
 import { observable } from 'mobx'
+
+import { RootStore } from './RootStore'
 
 type WorkoutDay = 'a' | 'b'
 
@@ -10,7 +11,12 @@ interface WorkoutHistory {
   }>
 }
 
-class WorkoutStore {
+export class WorkoutStore {
+  rootStore: RootStore
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore
+  }
+
   @observable currentSquat: number
   @observable currentBenchPress: number
   @observable currentOverheadPress: number
@@ -19,5 +25,3 @@ class WorkoutStore {
   @observable lastWorkoutTay: WorkoutDay
   @observable history: WorkoutHistory
 }
-
-export const RouterStoreContext = React.createContext(new WorkoutStore())

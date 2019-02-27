@@ -1,10 +1,14 @@
-import React from 'react'
 import { observable } from 'mobx'
+
+import { RootStore } from './RootStore'
 
 export type Routes = 'WorkoutHistory' | 'CurrentWorkout'
 
-class RouterStore {
+export class RouterStore {
+  rootStore: RootStore
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore
+  }
+
   @observable screen: Routes = 'CurrentWorkout'
 }
-
-export const RouterStoreContext = React.createContext(new RouterStore())

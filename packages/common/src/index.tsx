@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native'
 
 import { Router } from './Router'
 
+import { colors } from './utils/colors'
+
 export function App() {
   return (
     <View style={styles.container}>
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: colors.light,
     width: '100%',
     maxWidth: 425,
   },
