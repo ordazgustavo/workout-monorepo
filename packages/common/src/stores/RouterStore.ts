@@ -10,5 +10,5 @@ export class RouterStore {
     this.rootStore = rootStore
   }
 
-  @observable screen: Routes = 'CurrentWorkout'
+  @observable screen: Routes = 'WorkoutHistory'
 }

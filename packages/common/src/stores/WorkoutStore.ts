@@ -11,6 +11,14 @@ interface WorkoutHistory {
   }>
 }
 
+interface CurrentExercise {
+  weight: number
+  reps: number
+  numSets: number
+  exercise: string
+  sets: string[]
+}
+
 export class WorkoutStore {
   rootStore: RootStore
   constructor(rootStore: RootStore) {
@@ -23,5 +31,6 @@ export class WorkoutStore {
   @observable currentDeadlift: number
   @observable currentBarbellRow: number
   @observable lastWorkoutTay: WorkoutDay
+  @observable currentExercises: CurrentExercise[] = []
   @observable history: WorkoutHistory
 }
