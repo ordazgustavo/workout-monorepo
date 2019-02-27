@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { RootStoreContext } from '../stores/RootStore'
 import { WorkoutCard } from '../ui/WorkoutCard'
+import { WorkoutTimer } from '../ui/WorkoutTimer'
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +15,13 @@ const styles = StyleSheet.create({
 })
 
 export const CurrentWorkout = observer(() => {
-  const { workoutStore } = React.useContext(RootStoreContext)
+  const { workoutStore, workoutTimerStore } = React.useContext(RootStoreContext)
+
+  React.useEffect(() => {
+    return () => {
+      workoutTimerStore.stopTimer()
+    }
+  }, [])
   return (
     <View style={styles.container}>
       {workoutStore.currentExercises.map(
@@ -25,12 +32,14 @@ export const CurrentWorkout = observer(() => {
               exercise={exercise}
               repsAndWeight={`${numSets}x${reps} ${weight}`}
               onSetPress={setIndex => {
+                workoutTimerStore.startTimer()
                 const value = sets[setIndex]
                 let newValue: string
                 if (value === '') {
                   newValue = reps.toString()
                 } else if (value === '0') {
                   newValue = ''
+                  workoutTimerStore.stopTimer()
                 } else {
                   newValue = `${Number(value) - 1}`
                 }
@@ -41,6 +50,13 @@ export const CurrentWorkout = observer(() => {
           )
         },
       )}
+      {workoutTimerStore.isRunning ? (
+        <WorkoutTimer
+          currentTime={workoutTimerStore.display}
+          percent={workoutTimerStore.percent}
+          onClosePress={() => workoutTimerStore.stopTimer()}
+        />
+      ) : null}
     </View>
   )
 })
