@@ -25,9 +25,10 @@ export const CurrentWorkout = observer(() => {
   return (
     <View style={styles.container}>
       {workoutStore.currentExercises.map(
-        ({ sets, exercise, reps, numSets, weight }) => {
+        ({ sets, exercise, reps, numSets, weight }, i) => {
           return (
             <WorkoutCard
+              key={i}
               sets={sets}
               exercise={exercise}
               repsAndWeight={`${numSets}x${reps} ${weight}`}

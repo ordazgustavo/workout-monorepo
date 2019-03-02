@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { Router } from './Router'
+import { Routes } from './Routes'
 
 import { colors } from './utils/colors'
 
@@ -9,7 +9,7 @@ export function App() {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Router />
+        <Routes />
       </View>
     </View>
   )

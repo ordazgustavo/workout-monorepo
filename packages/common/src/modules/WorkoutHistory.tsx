@@ -1,15 +1,17 @@
 import React from 'react'
 import { View, Text, Button } from 'react-native'
 import { observer } from 'mobx-react-lite'
+import { RouteComponentProps } from 'react-router'
 
 import { RootStoreContext } from '../stores/RootStore'
 
-export const WorkoutHistory = observer(() => {
+interface IProps extends RouteComponentProps {}
+
+export const WorkoutHistory: React.FC<IProps> = observer(({ history }) => {
   const rootStore = React.useContext(RootStoreContext)
   return (
     <View>
       <Text>WorkoutHistory page</Text>
-      <Text>{rootStore.routerStore.screen}</Text>
       <Button
         title="Create Workout"
         onPress={() => {
@@ -36,7 +38,7 @@ export const WorkoutHistory = observer(() => {
               weight: 360,
             },
           )
-          rootStore.routerStore.screen = 'CurrentWorkout'
+          history.push('/current-workout')
         }}
       />
     </View>
