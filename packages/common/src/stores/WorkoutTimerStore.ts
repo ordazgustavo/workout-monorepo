@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx'
+import { persist } from 'mobx-persist'
 import dayjs from 'dayjs'
 
 import { RootStore } from './RootStore'
@@ -17,9 +18,9 @@ export class WorkoutTimerStore {
     this.rootStore = rootStore
   }
 
-  @observable startTime = dayjs()
-  @observable isRunning = false
-  @observable seconds = 0
+  @persist('object') @observable startTime = dayjs()
+  @persist @observable isRunning = false
+  @persist @observable seconds = 0
 
   @action startTimer() {
     this.isRunning = true
