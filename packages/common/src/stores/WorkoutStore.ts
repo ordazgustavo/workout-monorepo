@@ -13,7 +13,7 @@ export interface CurrentExercise {
   sets: string[]
 }
 
-interface WorkoutHistory {
+export interface WorkoutHistory {
   [key: string]: CurrentExercise[]
 }
 

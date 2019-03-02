@@ -7,18 +7,40 @@ import dayjs from 'dayjs'
 import { HistoryCard } from '../ui/HistoryCard'
 
 import { RootStoreContext } from '../stores/RootStore'
+import { CurrentExercise } from '../stores/WorkoutStore'
 
 interface IProps extends RouteComponentProps {}
 
+const numColumns = 3
+
 const styles = StyleSheet.create({
-  historyContainer: {
+  row: {
+    flexDirection: 'row',
+  },
+  cardContainer: {
     flex: 1,
-    marginVertical: 20,
+    padding: 10,
   },
 })
 
 export const WorkoutHistory: React.FC<IProps> = observer(({ history }) => {
   const { workoutStore } = React.useContext(RootStoreContext)
+
+  const rows: Array<
+    Array<{
+      date: string
+      exercises: CurrentExercise[]
+    }>
+  > = []
+
+  Object.entries(workoutStore.history).forEach(([date, exercises], i) => {
+    if (i % numColumns === 0) {
+      rows.push([{ date, exercises }])
+    } else {
+      rows[rows.length - 1].push({ date, exercises })
+    }
+  })
+
   return (
     <View>
       <Text>WorkoutHistory page</Text>
@@ -53,19 +75,32 @@ export const WorkoutHistory: React.FC<IProps> = observer(({ history }) => {
       />
 
       <FlatList
-        data={Object.entries(workoutStore.history)}
-        style={styles.historyContainer}
-        renderItem={({ item: [dt, value], index }) => {
+        data={rows}
+        renderItem={({ item }) => {
+          const diff = numColumns % item.length
           return (
-            <HistoryCard
-              key={index}
-              header={dayjs(dt).format('ddd, DD MMM')}
-              currentExercises={value}
-            />
+            <View style={styles.row}>
+              {item.map(({ date, exercises }) => (
+                <View key={date} style={styles.cardContainer}>
+                  <HistoryCard
+                    onPress={() => {
+                      const [year, month, day] = date.split('-')
+                      history.push(`/workout/${year}/${month}/${day}`)
+                    }}
+                    header={dayjs(date).format('ddd, DD MMM')}
+                    currentExercises={exercises}
+                  />
+                </View>
+              ))}
+              {Array.from({ length: diff })
+                .fill(diff)
+                .map((e, i) => (
+                  <View key={i} style={styles.cardContainer} />
+                ))}
+            </View>
           )
         }}
-        numColumns={2}
-        keyExtractor={([dt]) => dt}
+        keyExtractor={item => item.reduce((pv, cv) => `${pv} ${cv.date}`, '')}
       />
     </View>
   )
