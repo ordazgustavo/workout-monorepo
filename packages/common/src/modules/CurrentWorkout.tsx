@@ -1,10 +1,14 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Button } from 'react-native'
 import { observer } from 'mobx-react-lite'
+import { RouteComponentProps } from 'react-router'
+import dayjs from 'dayjs'
 
 import { RootStoreContext } from '../stores/RootStore'
 import { WorkoutCard } from '../ui/WorkoutCard'
 import { WorkoutTimer } from '../ui/WorkoutTimer'
+
+interface IProps extends RouteComponentProps {}
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +18,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const CurrentWorkout = observer(() => {
+export const CurrentWorkout: React.FC<IProps> = observer(({ history }) => {
   const { workoutStore, workoutTimerStore } = React.useContext(RootStoreContext)
 
   React.useEffect(() => {
@@ -51,6 +55,15 @@ export const CurrentWorkout = observer(() => {
           )
         },
       )}
+      <Button
+        title="SAVE"
+        onPress={() => {
+          workoutStore.history[dayjs().toISOString()] =
+            workoutStore.currentExercises
+          workoutStore.currentExercises = []
+          history.push('/')
+        }}
+      />
       {workoutTimerStore.isRunning ? (
         <WorkoutTimer
           currentTime={workoutTimerStore.display}
